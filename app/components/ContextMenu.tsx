@@ -22,7 +22,7 @@ export default forwardRef<HTMLDivElement, Props>(function ContextMenu(
       <div className="bg-[#FAFBFC] rounded-t-xl p-3 border-b-[0.5px] border-b-secondary">
         <h2 className="text-[#1A1A1A] font-medium text-base">Settings</h2>
       </div>
-      <ul className="p-3 text-lg space-y-2">
+      <ul className="p-2 text-lg space-y-2">
         <ContextMenuItem
           icon={Flag}
           iconColor="blue"
@@ -31,7 +31,7 @@ export default forwardRef<HTMLDivElement, Props>(function ContextMenu(
         <ContextMenuItem icon={PencilLine} text="Rename" />
         <ContextMenuItem icon={Clipboard} text="Copy" />
         <ContextMenuItem icon={Copy} text="Duplicate" />
-        <hr className="my-3 border-t transform scale-y-[0.5] origin-top border-secondary" />
+        <hr className="mt-3 mb-2 border-t transform scale-y-[0.5] origin-top border-secondary" />
         <ContextMenuItem
           icon={Trash2}
           iconColor="red"

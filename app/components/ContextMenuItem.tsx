@@ -11,7 +11,7 @@ function ContextMenuItem({ icon, iconColor, text, textColor, onClick }: Props) {
   return (
     <li
       onClick={onClick}
-      className="flex gap-2 items-center focus:outline-none focus-visible:shadow-sm focus-visible:ring-[0.5px] focus-visible:ring-[#2F72E2] focus-visible:ring-offset-0 focus-visible:rounded-sm"
+      className="flex gap-2 p-1 items-center focus:outline-none focus-visible:shadow-sm focus-visible:ring-[0.5px] focus-visible:ring-[#2F72E2] hover:bg-default-hover hover:rounded-sm focus-visible:ring-offset-0 focus-visible:rounded-sm"
       tabIndex={0}
     >
       <span style={{ color: iconColor }}>
