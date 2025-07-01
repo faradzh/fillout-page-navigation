@@ -1,6 +1,6 @@
 # Fillout Page Navigation
 
-A reusable and accessible navigation item component for [Next.js](https://nextjs.org) apps, styled with [Tailwind CSS](https://tailwindcss.com). Designed for use in the Fillout interface.
+A new design implementation of the reusable and accessible navigation component for Fillout form builder, styled with [Tailwind CSS](https://tailwindcss.com).
 
 ## 📦 Stack
 
