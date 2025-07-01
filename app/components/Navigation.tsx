@@ -63,6 +63,18 @@ function Navigation(props: { pages: Page[] }) {
     }
   }
 
+  const handleDragEnd = useCallback(function (event: DragEndEvent) {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      setPages((pages) => {
+        const oldIndex = pages.findIndex((page) => page.id === active.id);
+        const newIndex = pages.findIndex((page) => page.id === over?.id);
+        return arrayMove(pages, oldIndex, newIndex);
+      });
+    }
+  }, []);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -126,18 +138,6 @@ function Navigation(props: { pages: Page[] }) {
       </DndContext>
     </nav>
   );
-
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
-
-    if (active.id !== over?.id) {
-      setPages((pages) => {
-        const oldIndex = pages.findIndex((page) => page.id === active.id);
-        const newIndex = pages.findIndex((page) => page.id === over?.id);
-        return arrayMove(pages, oldIndex, newIndex);
-      });
-    }
-  }
 }
 
 export default Navigation;
