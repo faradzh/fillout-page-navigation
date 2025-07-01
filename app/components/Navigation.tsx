@@ -35,6 +35,26 @@ function Navigation(props: { pages: Page[] }) {
   const [pages, setPages] = useState<Page[]>(props.pages);
   const [activePage, setActivePage] = useState<Page>(props.pages[0]);
 
+  function insertNewPage(prevId: string) {
+    const newPage = {
+      id: crypto.randomUUID(),
+      title: "New Page",
+      icon: "",
+    } as Page;
+    const index = pages.findIndex((page) => page.id === prevId);
+    pages.splice(index, 0, newPage);
+    setPages([...pages]);
+  }
+
+  function pushNewPage() {
+    const newPage = {
+      id: crypto.randomUUID(),
+      title: "New Page",
+      icon: "",
+    } as Page;
+    setPages((prevPages) => [...prevPages, newPage]);
+  }
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -57,7 +77,13 @@ function Navigation(props: { pages: Page[] }) {
         <SortableContext items={pages} strategy={horizontalListSortingStrategy}>
           {pages.map((page, index) => (
             <div key={page.id} className="flex items-center relative">
-              {index > 0 && <Expander index={index} />}
+              {index > 0 && (
+                <Expander
+                  id={page.id}
+                  index={index}
+                  addPageHandler={insertNewPage}
+                />
+              )}
               <SortableNavigationItem
                 id={page.id}
                 index={index}
@@ -72,7 +98,7 @@ function Navigation(props: { pages: Page[] }) {
             </div>
           ))}
           <div className="flex items-center relative">
-            <Expander index={pages.length} />
+            <Expander index={pages.length} addPageHandler={pushNewPage} />
             <div
               tabIndex={0}
               className="relative focus:outline-none focus-visible:shadow-sm focus-visible:ring-2 focus-visible:ring-[#2F72E2]/50 focus-visible:ring-offset-0 focus-visible:rounded-lg"
@@ -82,6 +108,7 @@ function Navigation(props: { pages: Page[] }) {
                 isActive={false}
                 item={{ id: "1", title: "Add page", icon: Plus }}
                 className="bg-white shadow-sm"
+                clickHandler={pushNewPage}
               />
             </div>
           </div>

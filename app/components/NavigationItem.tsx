@@ -12,8 +12,15 @@ interface Props {
   isActive: boolean;
   setActivePage?(item: Page): void;
   className?: string;
+  clickHandler?(): void;
 }
-function NavigationItem({ item, isActive, setActivePage, className }: Props) {
+function NavigationItem({
+  item,
+  isActive,
+  setActivePage,
+  className,
+  clickHandler,
+}: Props) {
   const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const contextMenuRef = useRef<HTMLDivElement>(null);
@@ -26,6 +33,7 @@ function NavigationItem({ item, isActive, setActivePage, className }: Props) {
   }
 
   function onBtnClick() {
+    clickHandler?.();
     setActivePage?.(item);
   }
 
