@@ -13,6 +13,7 @@ export default forwardRef<HTMLDivElement, Props>(function ContextMenu(
 ) {
   return (
     <div
+      aria-label="Settings menu"
       ref={ref}
       tabIndex={-1}
       onBlur={onBlur}
