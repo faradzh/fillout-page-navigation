@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Plus } from "lucide-react";
+import { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 
 import {
@@ -22,7 +21,6 @@ import {
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
 
 import NavigationItem from "./NavigationItem";
-import Expander from "./Expander";
 import { Page } from "./types";
 
 // dynamically import the dnd's component on the client to avoid server-client content mismatch
@@ -30,29 +28,39 @@ const SortableNavigationItem = dynamic(
   () => import("./SortableNavigationItem"),
   { ssr: false }
 );
+const Expander = dynamic(() => import("./Expander"), { ssr: false });
 
 function Navigation(props: { pages: Page[] }) {
   const [pages, setPages] = useState<Page[]>(props.pages);
   const [activePage, setActivePage] = useState<Page>(props.pages[0]);
 
-  function insertNewPage(prevId: string) {
-    const newPage = {
-      id: crypto.randomUUID(),
-      title: "New Page",
-      icon: "",
-    } as Page;
-    const index = pages.findIndex((page) => page.id === prevId);
-    pages.splice(index, 0, newPage);
-    setPages([...pages]);
-  }
+  const insertNewPage = useCallback(
+    function (prevId: string) {
+      const newPage = {
+        id: crypto.randomUUID(),
+        title: "New Page",
+        icon: "",
+      } as Page;
+      const index = pages.findIndex((page) => page.id === prevId);
+      pages.splice(index, 0, newPage);
+      setPages([...pages]);
+    },
+    [pages]
+  );
 
-  function pushNewPage() {
+  const pushNewPage = useCallback(function () {
     const newPage = {
       id: crypto.randomUUID(),
       title: "New Page",
       icon: "",
     } as Page;
     setPages((prevPages) => [...prevPages, newPage]);
+  }, []);
+
+  function onNewPageBtnDown(e: React.KeyboardEvent) {
+    if (e.key === "Enter") {
+      pushNewPage();
+    }
   }
 
   const sensors = useSensors(
@@ -103,10 +111,12 @@ function Navigation(props: { pages: Page[] }) {
               tabIndex={0}
               className="relative focus:outline-none focus-visible:shadow-sm focus-visible:ring-2 focus-visible:ring-[#2F72E2]/50 focus-visible:ring-offset-0 focus-visible:rounded-lg"
               style={{ left: `-${pages.length * 2}px` }}
+              onClick={pushNewPage}
+              onKeyDown={onNewPageBtnDown}
             >
               <NavigationItem
                 isActive={false}
-                item={{ id: "1", title: "Add page", icon: Plus }}
+                item={{ id: "1", title: "Add page", icon: "plus" }}
                 className="bg-white shadow-sm"
                 clickHandler={pushNewPage}
               />

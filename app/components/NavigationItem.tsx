@@ -2,10 +2,16 @@
 
 import { useState, useEffect, useRef } from "react";
 import clsx from "clsx";
-import { FileText, EllipsisVertical } from "lucide-react";
+import { Info, FileText, EllipsisVertical, CircleCheck } from "lucide-react";
 
 import ContextMenu from "./ContextMenu";
 import { Page } from "./types";
+
+export const PAGE_ICONS = {
+  info: Info,
+  fileText: FileText,
+  circleCheck: CircleCheck,
+};
 
 interface Props {
   item: Page;
@@ -14,18 +20,12 @@ interface Props {
   className?: string;
   clickHandler?(): void;
 }
-function NavigationItem({
-  item,
-  isActive,
-  setActivePage,
-  className,
-  clickHandler,
-}: Props) {
+function NavigationItem({ item, isActive, setActivePage, className }: Props) {
   const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const contextMenuRef = useRef<HTMLDivElement>(null);
 
-  const Icon = item.icon;
+  const Icon = PAGE_ICONS[item.icon as keyof typeof PAGE_ICONS] ?? FileText;
 
   function onClick(e: React.SyntheticEvent) {
     e.stopPropagation();
@@ -33,7 +33,6 @@ function NavigationItem({
   }
 
   function onBtnClick() {
-    clickHandler?.();
     setActivePage?.(item);
   }
 
