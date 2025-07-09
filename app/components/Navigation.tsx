@@ -42,8 +42,9 @@ function Navigation(props: { pages: Page[] }) {
         icon: "",
       } as Page;
       const index = pages.findIndex((page) => page.id === prevId);
-      pages.splice(index, 0, newPage);
-      setPages([...pages]);
+      const newPages = [...pages];
+      newPages.splice(index, 0, newPage);
+      setPages(newPages);
     },
     [pages]
   );
@@ -57,7 +58,7 @@ function Navigation(props: { pages: Page[] }) {
     setPages((prevPages) => [...prevPages, newPage]);
   }, []);
 
-  function onNewPageBtnDown(e: React.KeyboardEvent) {
+  function onNewPageKeyDown(e: React.KeyboardEvent) {
     if (e.key === "Enter") {
       pushNewPage();
     }
@@ -124,11 +125,15 @@ function Navigation(props: { pages: Page[] }) {
               className="relative focus:outline-none focus-visible:shadow-sm focus-visible:ring-2 focus-visible:ring-[#2F72E2]/50 focus-visible:ring-offset-0 focus-visible:rounded-lg"
               style={{ left: `-${pages.length * 2}px` }}
               onClick={pushNewPage}
-              onKeyDown={onNewPageBtnDown}
+              onKeyDown={onNewPageKeyDown}
             >
               <NavigationItem
                 isActive={false}
-                item={{ id: "1", title: "Add page", icon: "plus" }}
+                item={{
+                  id: crypto.randomUUID(),
+                  title: "Add page",
+                  icon: "plus",
+                }}
                 className="bg-white shadow-sm"
                 clickHandler={pushNewPage}
               />
